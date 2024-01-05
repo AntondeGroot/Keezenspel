@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.game</groupId>
-	<artifactId>keezenspel</artifactId>
+	<artifactId>keezenspel.backend.keezenspel</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>keezenspel</name>
 	<description>Project for Spring Boot</description>
