@@ -8,10 +8,10 @@ import com.game.keezenspel.Tiles.Tile;
 public class Pawn {
     private long id;
     private int playerId;
-    private Tile positionTile; 
+    private Tile positionTile;
     private Tile homeTile;
 
-    public Pawn(int playerId, Tile nestTile){
+    public Pawn(int playerId, Tile nestTile) {
         this.id = new Random().nextLong();
         this.playerId = playerId;
         this.homeTile = nestTile;
@@ -26,22 +26,22 @@ public class Pawn {
         return playerId;
     }
 
-    public void kill(){
+    public void kill() {
         this.positionTile = this.homeTile;
     }
 
-    public void move(List<Tile> tiles){
-
-    }
-   
-
-    public void SwapWith(Pawn otherPawn){
-            Tile tempTile = otherPawn.positionTile;
-            otherPawn.positionTile = this.positionTile;
-            this.positionTile = tempTile;
+    public void move(List<Tile> tiles) {
+        // TODO: IMPLEMENT MOVEMENT
     }
 
-    public void CanMove(){}
-    public void Move(){}
+    public void SwapWith(Pawn otherPawn) {
+        Tile tempTile = otherPawn.positionTile;
+        otherPawn.positionTile = this.positionTile;
+        this.positionTile = tempTile;
+    }
 
+    @Override
+    public String toString() {
+        return "Pawn [\nplayerId:" + playerId + ", \nhomeId: " + homeTile.getId() + "\n]\n\n";
+    }
 }
