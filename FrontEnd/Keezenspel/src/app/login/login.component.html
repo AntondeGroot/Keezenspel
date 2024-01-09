@@ -1,0 +1,12 @@
+<div class="container">
+    <h1>Pick your username</h1>
+    <br>
+    <body>
+        <div class="alert alert-warning" *ngIf='invalidUsername'>Please fill in your username</div>
+        <div>
+            Username: <input type="text" [(ngModel)]="userName">
+            <br>
+            <button type="button" (click)="loginUser()" class="btn btn-primary">Login</button>
+        </div>
+    </body>
+</div>
