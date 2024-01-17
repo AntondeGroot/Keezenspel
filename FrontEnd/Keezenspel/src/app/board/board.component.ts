@@ -8,15 +8,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrl: './board.component.css'
 })
 export class BoardComponent implements OnInit {
-  monitorHeight: number = 0;
-
-  @ViewChild("boardCanvas")
-  private boardCanvas !: ElementRef;
-
-  private context: any;
 
   constructor() {
-    this.monitorHeight = window.innerHeight
   }
 
   public ngOnInit(): void {
@@ -26,8 +19,6 @@ export class BoardComponent implements OnInit {
 
   public ngAfterViewInit() {
     // execute after the html has rendered
-    this.context = this.boardCanvas.nativeElement.getContext("2d");
-    this.context.fillRect(20, 20, 20, 20);
   }
 
 

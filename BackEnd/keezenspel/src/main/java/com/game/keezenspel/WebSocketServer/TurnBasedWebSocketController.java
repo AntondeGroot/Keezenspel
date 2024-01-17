@@ -1,4 +1,4 @@
-package com.game.keezenspel;
+package com.game.keezenspel.WebSocketServer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -29,6 +29,7 @@ public class TurnBasedWebSocketController {
     @SendTo("/topic/welcome")
     public String handleJoin(String username) {
         // Assign a userId to the player and add to the playerMap
+        System.out.println("user = "+username);
         String userId = "User" + (playerMap.size() + 1);
         playerMap.put(userId, username);
         return "Welcome, " + username + "!";
