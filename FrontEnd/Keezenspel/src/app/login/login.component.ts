@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { NgModel } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -32,4 +31,6 @@ export class LoginComponent {
       this.invalidUsername = true;
     }
   }
+
+  
 }
