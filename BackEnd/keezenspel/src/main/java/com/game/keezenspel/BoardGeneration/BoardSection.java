@@ -45,8 +45,8 @@ public class BoardSection {
         this.ypos = this.lastNormalPoint.getY();
         rotate(-270);
         // continue
-        createNTiles(1, TileType.START);
-        this.lastNormalPoint = createNTiles(1, TileType.NORMAL);
+        createNTiles(1, TileType.NORMAL);
+        this.lastNormalPoint = createNTiles(1, TileType.START);
         // draw nest       
         drawBase();
         // rest of tiles
@@ -94,6 +94,7 @@ public class BoardSection {
         takeSingleStep(stepsize);
     }
     private void drawBase(){
+        rotate(-45);
         takeSingleStep(this.cellDistance*3);
 
         
@@ -111,6 +112,7 @@ public class BoardSection {
         takeSingleStep(this.cellDistance);
         tiles.add(new Tile(0, TileType.FINISH, new Point(roundDouble(this.xpos), roundDouble(this.ypos))));
         rotate(-180);
+        rotate(45);
     }
 
     private double roundDouble(double number){
