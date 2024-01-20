@@ -9,7 +9,7 @@ import org.springframework.data.geo.Point;
 import com.game.keezenspel.Tiles.Tile;
 
 public class BoardGenerator {
-    private int celldistance = 20;
+    private double celldistance;
     private double angle = -90;
     private List<BoardSection> boardSections = new ArrayList<>();
     private BoardSection boardSection;
@@ -18,6 +18,7 @@ public class BoardGenerator {
     private int nrPlayers;
 
     public BoardGenerator(int nrplayers, int boardwidth) {
+        this.celldistance = BoardSize.getCellDistance(nrplayers, boardwidth);
         this.nrPlayers = nrplayers;
 
         calculateStartingOffset(boardwidth, this.nrPlayers);
@@ -30,15 +31,14 @@ public class BoardGenerator {
         connectAllSections();
     }
 
-    private void appendTiles(){
-        List<Tile>localTiles = new ArrayList<>();
-         localTiles = this.boardSection.getAllTiles();
-         for (Tile tile : localTiles) {
+    private void appendTiles() {
+        List<Tile> localTiles = new ArrayList<>();
+        localTiles = this.boardSection.getAllTiles();
+        for (Tile tile : localTiles) {
             tiles.add(tile);
-         }
+        }
 
     }
-
 
     private void createBoardSection() {
         boardSection = new BoardSection(nextStartPoint, angle, celldistance);
@@ -59,8 +59,21 @@ public class BoardGenerator {
     }
 
     public void printOutDIVs() {
+        String classstr; 
+
         for (Tile tile : tiles) {
-            System.out.println("<div class=\"cell\" style=\"top: " + (tile.getPoint().getY()) + "px;left: " + (tile.getPoint().getX()) + "px;\" ></div>");
+            
+            switch (tile.getType()){
+                case NEST:
+                case FINISH:
+                case START:
+                    classstr = "playercell";
+                    break;
+                default:
+                    classstr = "cell";
+                    break;
+            }
+            System.out.println("<div class=\""+classstr+"\" style=\"top: " + (tile.getPoint().getY()) + "px;left: " + (tile.getPoint().getX()) + "px;\" ></div>");
         }
     }
 
