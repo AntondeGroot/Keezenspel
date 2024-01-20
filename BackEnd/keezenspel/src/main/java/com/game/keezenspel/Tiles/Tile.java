@@ -2,6 +2,8 @@ package com.game.keezenspel.Tiles;
 
 import java.util.Random;
 
+import org.springframework.data.geo.Point;
+
 public class Tile {
     private final long id;
     private final TileType tileType;
@@ -9,11 +11,17 @@ public class Tile {
     private long previousTileId;
     private long nextTileId;
     private long nextFinishTileId;
+    private Point point;
 
-    public Tile(int playerId, TileType tileType) {
+    public Tile(int playerId, TileType tileType, Point point) {
         id = new Random().nextLong();
         this.playerId = playerId;
         this.tileType = tileType;
+        this.point = point;
+    }
+
+    public Point getPoint(){
+        return this.point;
     }
 
     public long getId() {

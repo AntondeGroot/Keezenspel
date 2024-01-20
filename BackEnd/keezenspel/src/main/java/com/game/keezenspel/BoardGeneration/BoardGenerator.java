@@ -6,64 +6,69 @@ import java.util.List;
 
 import org.springframework.data.geo.Point;
 
+import com.game.keezenspel.Tiles.Tile;
+
 public class BoardGenerator {
+    private int celldistance = 20;
+    private double angle = -90;
+    private List<BoardSection> boardSections = new ArrayList<>();
+    private BoardSection boardSection;
+    private List<Tile> tiles = new ArrayList<Tile>();
+    private Point nextStartPoint;
+    private int nrPlayers;
 
-public BoardGenerator() {
-}
-    // calculate first point
-    int nrplayers = 2;
-    int boardwidth = 600;
-    int boardheight = boardwidth;
-    int celldistance = 20;//cell diameter + distance 40+20
+    public BoardGenerator(int nrplayers, int boardwidth) {
+        this.nrPlayers = nrplayers;
 
-    double angle = 0;
-    double angleAlfa = 0;
-    List<BoardSection> quartiles = new ArrayList<>();
-    List<String> points = new ArrayList<>();
-    List<String> temppoints;
-    BoardSection quartile;
-    Point point;
+        calculateStartingOffset(boardwidth, this.nrPlayers);
 
-    public BoardGenerator(int nrplayers, int boardwidth, int boardheight) {
-        this.nrplayers = nrplayers;
-        this.boardwidth = boardwidth;
-        this.boardheight = boardheight;
-
-
-        //calculate x distance
-        double x = boardwidth/2 + 2*celldistance;
-        double y = boardheight/2 + 2*celldistance*Math.tan(Math.toRadians(90-180/nrplayers));
-
-        for (int i = 0; i < nrplayers; i++) {   
-            this.quartile = new BoardSection(x, y, angle,celldistance);
-            this.point = this.quartile.getLasPoint();
-            
-            x = point.getX();
-            y = point.getY();
-            temppoints = this.quartile.getAllPoints();
-            for (String point : temppoints) {
-                points.add(point);
-            }
-            angle -= 360/nrplayers;
+        for (int i = 0; i < nrplayers; i++) {
+            createBoardSection();
+            appendTiles();
+            rotateStartingAngle();
         }
+        connectAllSections();
+    }
 
-        for (String string : points) {
-            System.out.println(string);
+    private void appendTiles(){
+        List<Tile>localTiles = new ArrayList<>();
+         localTiles = this.boardSection.getAllTiles();
+         for (Tile tile : localTiles) {
+            tiles.add(tile);
+         }
+
+    }
+
+
+    private void createBoardSection() {
+        boardSection = new BoardSection(nextStartPoint, angle, celldistance);
+        nextStartPoint = boardSection.getNextStartPoint();
+        boardSections.add(boardSection);
+    }
+
+    private void connectAllSections() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method
+        // 'connectAllTiles'");
+    }
+
+    public void calculateStartingOffset(double boardwidth, int nrplayers) {
+        this.nextStartPoint = new Point(
+                boardwidth / 2 + 2 * celldistance,
+                boardwidth / 2 + 2 * celldistance * Math.tan(Math.toRadians(90 - 180 / nrplayers)));
+    }
+
+    public void printOutDIVs() {
+        for (Tile tile : tiles) {
+            System.out.println("<div class=\"cell\" style=\"top: " + (tile.getPoint().getY()) + "px;left: " + (tile.getPoint().getX()) + "px;\" ></div>");
         }
     }
 
-    @Override
-    public String toString() {
-        // System.out.println(this.quartile);
-        return super.toString();
+    public void rotateStartingAngle() {
+        this.angle -= 360 / this.nrPlayers;
     }
-    
 
-    
+    public void appendPoints() {
 
-    
-
-    
-
+    }
 }
-

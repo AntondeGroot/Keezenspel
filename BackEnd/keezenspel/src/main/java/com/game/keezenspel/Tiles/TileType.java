@@ -5,5 +5,7 @@ public enum TileType {
         START,
         NORMAL,
         LASTNORMAL,
-        FINISH
+        FINISH,
+        STARTCONSTRUCTION,
+        ENDCONSTRUCTION
 }
