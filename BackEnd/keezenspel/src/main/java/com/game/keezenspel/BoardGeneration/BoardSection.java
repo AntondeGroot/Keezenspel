@@ -1,107 +1,137 @@
 package com.game.keezenspel.BoardGeneration;
 
 import java.lang.Math;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.geo.Point;
 
+import com.game.keezenspel.Tiles.Tile;
+import com.game.keezenspel.Tiles.TileType;
+
 public class BoardSection {
-    private double width;
-    private double height;
-    private Point point;
     private double cellDistance;
-
-    private double angleInDegrees;
     private double xpos;
-        private double ypos;
-        private double angleInRadians;
+    private double ypos;
+    private double angleInRadians;
+    private Point lastNormalPoint;
+    private List<Tile> tiles = new ArrayList<>();
+    private Point firstCorner;
+    private Point secondCorner;
+    private Point thirdCorner;
+    private Point fourthCorner;
 
-    List<Cell> cells = new ArrayList<Cell>();
+    public BoardSection(Point startPoint, double angleInDegrees, double cellDistance) {
 
-    public BoardSection(double Xstart, double Ystart, double angleInDegrees, double cellDistance) {
-        this.xpos = Xstart;
-        this.ypos = Ystart;
+        this.firstCorner = startPoint;
+
+        this.xpos = startPoint.getX();
+        this.ypos = startPoint.getY();
         this.cellDistance = cellDistance;
-        this.angleInDegrees = angleInDegrees;
         this.angleInRadians = Math.toRadians(angleInDegrees);
-        Point lastPoint;
-        Point nextPoint;
 
-        // loop down from starting point
+        createNTiles(1, TileType.STARTCONSTRUCTION);
+        secondCorner = createNTiles(5, TileType.NORMAL);
+        rotate(-90);
+        createNTiles(1, TileType.NORMAL);
+        this.lastNormalPoint = createNTiles(1, TileType.LASTNORMAL);
+        // draw homebase
+        rotateAndExtend(-90, this.cellDistance);
+        createNTiles(4,TileType.FINISH);
+        // reset
+        this.xpos = this.lastNormalPoint.getX();
+        this.ypos = this.lastNormalPoint.getY();
+        rotate(-270);
+        // continue
+        createNTiles(1, TileType.START);
+        this.lastNormalPoint = createNTiles(1, TileType.NORMAL);
+        // draw nest       
+        drawBase();
+        // rest of tiles
+        this.xpos = this.lastNormalPoint.getX();
+        this.ypos = this.lastNormalPoint.getY();
+        createNTiles(5,TileType.NORMAL);
+        createNTiles(1,TileType.ENDCONSTRUCTION);
+
         
-        for (int i = 0; i < 6; i++) {
-            cells.add(new Cell(xpos, ypos));
-            xpos += Math.sin(Math.toRadians(angleInDegrees)) * cellDistance;
-            ypos += Math.cos(Math.toRadians(angleInDegrees)) * cellDistance;
-        }
-        // make 90 degree turn
-        for (int i = 0; i < 4; i++) {
-            cells.add(new Cell(xpos, ypos));
-            xpos += Math.sin(Math.toRadians(angleInDegrees - 90)) * cellDistance;
-            ypos += Math.cos(Math.toRadians(angleInDegrees - 90)) * cellDistance;
-            //2 = turn to home
-            if (i==2) {
-
-            }
-            //3 = startpoint
-        }
-        // loop back
-        for (int i = 0; i < 6; i++) {
-            cells.add(new Cell(xpos, ypos));
-            xpos += Math.sin(Math.toRadians(angleInDegrees - 180)) * cellDistance;
-            ypos += Math.cos(Math.toRadians(angleInDegrees - 180)) * cellDistance;
-        }
-        this.point = new Point(xpos, ypos);
-
-        // takeSteps(6);
-        //     makeTurn(90);
-        //     nextPoint = takeSteps(3);
-        //     makeTurn(90);
-        //     //draw homebase
-        //     takeSteps(4);
-        //     //reset
-        //     this.xpos = nextPoint.getX();
-        //     this.ypos = nextPoint.getY();
-        //     makeTurn(270);
-        //     // continue
-        //     takeSteps(2);
-        //     makeTurn(90);
-        //     takeSteps(6);
     }
 
-    public Point getLasPoint() {
-        return this.point;
-    }
-
-    @Override
-    public String toString() {
-        for (Cell cell : cells) {
-            System.out.println(cell);
-        }
-        return "";
-    }
-
-    public List<String> getAllPoints() {
-        List<String> points = new ArrayList<>();
-
-        for (Cell cell : cells) {
-            points.add(cell.toString());
-        }
-
-        return points;
-    }
-
-    private Point takeSteps(int steps){
-        for (int i = 0; i < 6; i++) {
-            cells.add(new Cell(this.xpos, this.ypos));
-            this.xpos += Math.sin(Math.toRadians(this.angleInDegrees)) * this.cellDistance;
-            this.ypos += Math.cos(Math.toRadians(angleInDegrees)) * this.cellDistance;
-        }
+    public Point getNextStartPoint() {
         return new Point(this.xpos,this.ypos);
     }
-    private void makeTurn(double degrees){
-        this.angleInDegrees += degrees; 
+
+    public List<Tile> getAllTiles() {
+        return this.tiles;
+    }
+
+    private Point createNTiles(int steps,TileType tileType) {
+        for (int i = 0; i < steps; i++) {
+            tiles.add(new Tile(0, tileType, new Point(roundDouble(this.xpos), roundDouble(this.ypos))));
+            takeSingleStep(this.cellDistance);
+        }
+        return new Point(this.xpos, this.ypos);
+    }
+
+    // private void takeNSteps(double distance,int steps){
+    //     for (int i = 0; i < steps; i++) {
+    //         this.xpos += Math.cos(this.angleInRadians) * distance;
+    //         this.ypos += Math.sin(this.angleInRadians) * distance;
+    //     }
+    // }
+
+    private void takeSingleStep(double distance){
+        this.xpos += Math.cos(this.angleInRadians) * distance;
+        this.ypos -= Math.sin(this.angleInRadians) * distance;
+    }
+
+    private void rotate(double degrees) {
+        this.angleInRadians += Math.toRadians(degrees);
+    }
+    private void rotateAndExtend(double degrees, double stepsize){
+        rotate(degrees);
+        takeSingleStep(stepsize);
+    }
+    private void drawBase(){
+        takeSingleStep(this.cellDistance*3);
+
+        
+        tiles.add(new Tile(0, TileType.FINISH, new Point(roundDouble(this.xpos), roundDouble(this.ypos))));
+        rotate(-90);
+
+        takeSingleStep(this.cellDistance);
+        tiles.add(new Tile(0, TileType.FINISH, new Point(roundDouble(this.xpos), roundDouble(this.ypos))));
+        rotate(-90);
+
+        takeSingleStep(this.cellDistance);
+        tiles.add(new Tile(0, TileType.FINISH, new Point(roundDouble(this.xpos), roundDouble(this.ypos))));
+        rotate(-90);
+
+        takeSingleStep(this.cellDistance);
+        tiles.add(new Tile(0, TileType.FINISH, new Point(roundDouble(this.xpos), roundDouble(this.ypos))));
+        rotate(-180);
+    }
+
+    private double roundDouble(double number){
+        // configure formatting
+        String roundedNumber = "";
+        try {
+            DecimalFormat df = new DecimalFormat("#,#####");
+            df.setRoundingMode(RoundingMode.CEILING);
+            
+            // Formatting the double value
+            roundedNumber = df.format(number);
+        } catch (Exception NumberFormatException) {
+            DecimalFormat df = new DecimalFormat("#.#####");
+            df.setRoundingMode(RoundingMode.CEILING);
+            
+            // Formatting the double value
+            roundedNumber = df.format(number);
+        }
+
+        // Converting the formatted string back to a double
+        return Double.parseDouble(roundedNumber);
     }
 
 }
