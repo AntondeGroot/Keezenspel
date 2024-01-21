@@ -18,7 +18,7 @@ public class BoardSectionTest {
         Point startPoint = new Point(0,0);
 
         // [WHEN]
-        BoardSection boardSection = new BoardSection(startPoint,-90, 20);
+        BoardSection boardSection = new BoardSection(0,startPoint,-90, 20);
         List<Tile> tiles = boardSection.getAllTiles();
         Tile tile = tiles.getFirst();
 
@@ -32,7 +32,7 @@ public class BoardSectionTest {
         Point startPoint = new Point(0,0);
 
         // [WHEN]
-        BoardSection boardSection = new BoardSection(startPoint,-90, 20);
+        BoardSection boardSection = new BoardSection(0, startPoint,-90, 20);
         List<Tile> tiles = boardSection.getAllTiles();
         Tile tile = tiles.getFirst();
         Tile secondTile = tiles.get(1);
@@ -45,5 +45,21 @@ public class BoardSectionTest {
         assertTrue(tile.getType()==TileType.STARTCONSTRUCTION,"");
         assertTrue(secondTile.getType()==TileType.NORMAL,"");
         assertEquals((int)tile.getPoint().getX(), (int)secondTile.getPoint().getX(),"second tile should have the same x coordinate");
+    }
+
+    @Test
+    void pointAfterFirstCornerIsToTheLeftOfCorner() {
+        // [GIVEN]
+        Point startPoint = new Point(0,0);
+
+        // [WHEN]
+        BoardSection boardSection = new BoardSection(0, startPoint,-90, 20);
+        List<Tile> tiles = boardSection.getAllTiles();
+        Tile cornerTile = tiles.get(6);
+        Tile testTile = tiles.get(7);
+
+        // [THEN]
+        assertTrue(testTile.getPoint().getX() < cornerTile.getPoint().getX(),"second tile should be to the left of the corner tile");
+        assertEquals((int)cornerTile.getPoint().getY(), (int)testTile.getPoint().getY(),"tile after the corner should have the same y coordinate");
     }
 }

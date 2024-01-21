@@ -1,7 +1,5 @@
 package com.game.keezenspel.BoardGeneration;
 
-import org.springframework.data.geo.Point;
-
 public class BoardSize {
     
     public static double getCellDistance(int nrplayers, double boardSize){
