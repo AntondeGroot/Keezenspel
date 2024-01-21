@@ -9,9 +9,9 @@ import com.game.keezenspel.BoardGeneration.BoardGenerator;
 public class KeezenspelApplication {
 
 	public static void main(String[] args) {
-		//SpringApplication.run(KeezenspelApplication.class, args);
-		BoardGenerator boardHTMLGenerator = new BoardGenerator(3,600);
-		boardHTMLGenerator.printOutDIVs();
+		SpringApplication.run(KeezenspelApplication.class, args);
+		// BoardGenerator boardHTMLGenerator = new BoardGenerator(3,600);
+		// boardHTMLGenerator.printOutDIVs();
 	}
 
 }
