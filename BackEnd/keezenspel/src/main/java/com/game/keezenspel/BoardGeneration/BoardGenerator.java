@@ -24,11 +24,27 @@ public class BoardGenerator {
         calculateStartingOffset(boardwidth, this.nrPlayers);
 
         for (int i = 0; i < nrplayers; i++) {
-            createBoardSection();
+            createBoardSection(i);
             appendTiles();
             rotateStartingAngle();
         }
-        connectAllSections();
+    }
+
+    public void printOutDIVs() {
+        String divClassName; 
+        for (Tile tile : tiles) {          
+            switch (tile.getType()){
+                case NEST:
+                case FINISH:
+                case START:
+                    divClassName = "playercell";
+                    break;
+                default:
+                    divClassName = "cell";
+                    break;
+            }
+            System.out.println("<div class=\""+divClassName+"\" style=\"top: " + (tile.getPoint().getY()) + "px;left: " + (tile.getPoint().getX()) + "px;\" ></div>");
+        }
     }
 
     private void appendTiles() {
@@ -37,51 +53,21 @@ public class BoardGenerator {
         for (Tile tile : localTiles) {
             tiles.add(tile);
         }
-
     }
 
-    private void createBoardSection() {
-        boardSection = new BoardSection(nextStartPoint, angle, celldistance);
+    private void createBoardSection(long playerId) {
+        boardSection = new BoardSection(playerId, nextStartPoint, angle, celldistance);
         nextStartPoint = boardSection.getNextStartPoint();
         boardSections.add(boardSection);
     }
 
-    private void connectAllSections() {
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method
-        // 'connectAllTiles'");
-    }
-
-    public void calculateStartingOffset(double boardwidth, int nrplayers) {
+    private void calculateStartingOffset(double boardwidth, int nrplayers) {
         this.nextStartPoint = new Point(
                 boardwidth / 2 + 2 * celldistance,
                 boardwidth / 2 + 2 * celldistance * Math.tan(Math.toRadians(90 - 180 / nrplayers)));
     }
 
-    public void printOutDIVs() {
-        String classstr; 
-
-        for (Tile tile : tiles) {
-            
-            switch (tile.getType()){
-                case NEST:
-                case FINISH:
-                case START:
-                    classstr = "playercell";
-                    break;
-                default:
-                    classstr = "cell";
-                    break;
-            }
-            System.out.println("<div class=\""+classstr+"\" style=\"top: " + (tile.getPoint().getY()) + "px;left: " + (tile.getPoint().getX()) + "px;\" ></div>");
-        }
-    }
-
-    public void rotateStartingAngle() {
+    private void rotateStartingAngle() {
         this.angle -= 360 / this.nrPlayers;
-    }
-
-    public void appendPoints() {
-
     }
 }

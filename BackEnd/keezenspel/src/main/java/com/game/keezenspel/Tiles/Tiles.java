@@ -99,29 +99,29 @@
 //         }
 //     }
 
-//     private void CreateStartTile(int playerId) {
-//         tempTiles.add(new Tile(playerId, TileType.START));
-//     }
+//     // private void CreateStartTile(int playerId) {
+//     //     tempTiles.add(new Tile(playerId, TileType.START));
+//     // }
 
-//     private void CreateNormalTiles(int playerId) {
-//         for (int i = 1; i < 15; i++) {
-//             tempTiles.add(new Tile(playerId, TileType.NORMAL));
-//         }
-//         tempTiles.add(new Tile(playerId, TileType.LASTNORMAL));
-//     }
+//     // private void CreateNormalTiles(int playerId) {
+//     //     for (int i = 1; i < 15; i++) {
+//     //         tempTiles.add(new Tile(playerId, TileType.NORMAL));
+//     //     }
+//     //     tempTiles.add(new Tile(playerId, TileType.LASTNORMAL));
+//     // }
 
-//     private void CreateNormalTile(int playerId) {
-//         for (int i = 1; i < 15; i++) {
-//             tempTiles.add(new Tile(playerId, TileType.NORMAL));
-//         }
-//         tempTiles.add(new Tile(playerId, TileType.LASTNORMAL));
-//     }
+//     // private void CreateNormalTile(int playerId) {
+//     //     for (int i = 1; i < 15; i++) {
+//     //         tempTiles.add(new Tile(playerId, TileType.NORMAL));
+//     //     }
+//     //     tempTiles.add(new Tile(playerId, TileType.LASTNORMAL));
+//     // }
 
-//     private void CreateFinishTiles(int playerId) {
-//         for (int i = 0; i < 4; i++) {
-//             tempTiles.add(new Tile(playerId, TileType.FINISH));
-//         }
-//     }
+//     // private void CreateFinishTiles(int playerId) {
+//     //     for (int i = 0; i < 4; i++) {
+//     //         tempTiles.add(new Tile(playerId, TileType.FINISH));
+//     //     }
+//     // }
 
 //     private void connectNormalAndFinishTiles() {
 //         for (int i = 0; i < tempTiles.size() - 1; i++) {

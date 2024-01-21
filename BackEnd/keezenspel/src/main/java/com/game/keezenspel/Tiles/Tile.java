@@ -7,20 +7,20 @@ import org.springframework.data.geo.Point;
 public class Tile {
     private final long id;
     private final TileType tileType;
-    private int playerId;
+    private final long playerId;
     private long previousTileId;
     private long nextTileId;
     private long nextFinishTileId;
     private Point point;
 
-    public Tile(int playerId, TileType tileType, Point point) {
+    public Tile(long playerId, TileType tileType, Point point) {
         id = new Random().nextLong();
         this.playerId = playerId;
         this.tileType = tileType;
         this.point = point;
     }
 
-    public Point getPoint(){
+    public Point getPoint() {
         return this.point;
     }
 
@@ -40,7 +40,7 @@ public class Tile {
         return nextFinishTileId;
     }
 
-    public int getPlayerId() {
+    public long getPlayerId() {
         return playerId;
     }
 
